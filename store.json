@@ -1,0 +1,8 @@
+{
+    "post":[{"id": 1,"firstName": "Josh","lastName": "Swan","fullName": "Josh Swan","hometown": "San Francisco, CA"},
+            {"id": 2,"firstName": "Hazel","lastName": "Sw","fullName": "hA","hometown": "SanjOSE, CA"}
+           ],
+    "hellow":[
+                {"id":1},{"id":3}
+            ]
+}   
