@@ -46,15 +46,13 @@ def post(parent_identifier):
 
     return add_to_json(data, parent_identifier)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-
-
 def add_to_json(json_data, parent_identifier):
     response = {}
     print(json_data)
+    
     with open('store.json', 'r') as data_file:
         data = json.load(data_file)
+    
     if key_exist(data, parent_identifier):
         rows = data[parent_identifier]
         entity_id = json_data['id']
@@ -73,3 +71,40 @@ def add_to_json(json_data, parent_identifier):
             json.dump(data, data_file)
         response["message"] = "SuccessFully Added new Post"
     return response
+
+@app.route("/<parent_identifier>/<int:id>", methods=['PUT', 'PATCH'])
+def put(parent_identifier, id):
+    
+    data =  request.json
+
+    if 'id' in data:
+        return "ID is Immutable"
+    else:
+        return put_to_json(id, data, parent_identifier)
+
+def put_to_json(pk, json_data, parent_identifier):
+    response = {}
+    with open('store.json', 'r') as data_file:
+        data = json.load(data_file)
+    if key_exist(data, parent_identifier):
+        is_updated = False
+        if len(data[parent_identifier]):
+            for row in data[parent_identifier]:
+                if row['id'] == pk:
+                    for key, value in json_data.items():
+                        row[key] = value
+                    is_updated = True
+                    break
+        if is_updated:
+            response["message"] = "Successfully Updated Post Data"
+            with open('store.json', 'w') as data_file:
+                json.dump(data, data_file)
+        else:
+            response["message"] = "No Value for this id."
+    else:
+        response["message"] = "No Entity with this Name "+ parent_identifier
+    return response
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
