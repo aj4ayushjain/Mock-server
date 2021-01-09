@@ -105,6 +105,34 @@ def put_to_json(pk, json_data, parent_identifier):
         response["message"] = "No Entity with this Name "+ parent_identifier
     return response
 
+@app.route("/<parent_identifier>/<int:id>", methods=['DELETE'])
+def delete(parent_identifier, id):
+
+    return delete_json(id, parent_identifier)
+
+
+def delete_json(pk, parent_identifier):
+    response = {}
+    with open('store.json', 'r') as data_file:
+        data = json.load(data_file)
+
+    if key_exist(data, parent_identifier):
+        is_deleted = False
+        if len(data[parent_identifier]):
+            for row in data[parent_identifier]:
+                if row['id'] == pk:
+                    data[parent_identifier].remove(row)
+                    is_deleted = True
+                    break
+        if is_deleted:
+            response["message"] = "Successfully Deleted Data"
+            with open('store.json', 'w') as data_file:
+                json.dump(data, data_file)
+        else:
+            response["message"] = "No Elements for this id."
+    else:
+        response["message"] = "No Elements for this Entity"
+    return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
