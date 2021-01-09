@@ -1,5 +1,5 @@
 
-def exist(json_data, key):
+def key_exist(json_data, key):
     return True if key in json_data.keys() else False
 
 def query_to_mydict(dict):
