@@ -39,12 +39,37 @@ def fetch_id(parent_id, id):
         data = json.load(infile)
     return data[parent_id][id]
 
-#@app.route("/<parent_identifier>", methods=['POST'])
-#def post(parent_identifier):
+@app.route("/<parent_identifier>", methods=['POST'])
+def post(parent_identifier):
     
-#    data =  request.data
+    data =  request.json
 
-#    return add_to_json(data, parent_identifier)
+    return add_to_json(data, parent_identifier)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
+
+
+def add_to_json(json_data, parent_identifier):
+    response = {}
+    print(json_data)
+    with open('store.json', 'r') as data_file:
+        data = json.load(data_file)
+    if key_exist(data, parent_identifier):
+        rows = data[parent_identifier]
+        entity_id = json_data['id']
+        existing_entity = list(filter(lambda x: (x['id'] == entity_id), rows))
+        if len(existing_entity) == 0:
+            data[parent_identifier].append(json_data)
+            with open('store.json', 'w') as data_file:
+                json.dump(data, data_file)
+            response["message"] = "SuccessFully Added new Post"
+        else:
+            response["message"] = "Please Try with diffrent Key"
+    else:
+        data[entity] = []
+        data[parent_identifier].append(json_data)
+        with open('store.json', 'w') as data_file:
+            json.dump(data, data_file)
+        response["message"] = "SuccessFully Added new Post"
+    return response
