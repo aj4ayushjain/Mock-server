@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request   
 import json
-
+from utils import query_to_mydict, key_exist
 
 app = Flask(__name__)
 
@@ -8,17 +8,43 @@ app = Flask(__name__)
 def hellow_world():
     return "Hello WOrld"
 
-@app.route("/<parent_identifier>/", methods=['GET'])
+@app.route("/<parent_identifier>", methods=['GET'])
 def hello(parent_identifier):
     with open("store.json") as infile:
         data = json.load(infile)
-    return str(data[parent_identifier])
+    
+    args =  request.args
+    lst = data[parent_identifier]
+    query_len = len(args)
+    print(len(args))
+    if not bool(args):
+        return str(lst)
+
+    else:
+        newlist = []    
+        mydict = query_to_mydict(args)
+        for row in lst:
+            param_matched=0
+            for key in mydict.keys():
+                print(key)
+                if key in row.keys() and mydict[key] == str(row[key]):
+                   param_matched += 1
+                if param_matched == query_len:
+                    newlist.append(row)
+        return str(newlist)
 
 @app.route("/<parent_id>/<int:id>/", methods=['GET'])
 def fetch_id(parent_id, id):
     with open("store.json") as infile:
         data = json.load(infile)
     return data[parent_id][id]
+
+#@app.route("/<parent_identifier>", methods=['POST'])
+#def post(parent_identifier):
+    
+#    data =  request.data
+
+#    return add_to_json(data, parent_identifier)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
