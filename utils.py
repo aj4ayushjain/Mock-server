@@ -5,15 +5,40 @@ Utility Function to be used all over the app
 
 """
 def key_exist(json_data, key):
+    """Checks for a key in json
+
+    Arguments
+    json_data -- Decoded/Loaded json data   
+    key -- Parent_identifier entity 
+    Return
+    bool
+    """
     return True if key in json_data.keys() else False
 
 def query_to_mydict(dict):
+    """Converts the request args dict type to my dict
+
+    Arguments
+    dict - Request args (ImmutableMulitDict)
+
+    Return
+    dict
+    """
     res = {}
     for key in dict:
         res[key] = dict[key]
     return res
 
 def delete_json(pk, parent_identifier):
+    """Delete the entity corresponding to id - json 
+
+    Arguments
+    pk - id of entity
+    parent_identifier -  entity type
+
+    Return
+    json - message
+    """
     response = {}
     with open('store.json', 'r') as data_file:
         data = json.load(data_file)
@@ -37,6 +62,15 @@ def delete_json(pk, parent_identifier):
     return response
 
 def sort_json(parent_identifier, mydict):
+    """Sorts the entity corresponding to a key - json 
+
+    Arguments
+    parent_identifier -  entity type
+    mydict - Dict of keys
+
+    Return
+    json - message
+    """
 
     response = {}
     with open('store.json') as json_file:
@@ -59,6 +93,16 @@ def sort_json(parent_identifier, mydict):
     return response
 
 def put_to_json(pk, json_data, parent_identifier):
+    """Patches/Put to the entity corresponding to id - json 
+
+    Arguments
+    pk - id of entity
+    json_data - LOaded/encoded json data
+    parent_identifier -  entity type
+
+    Return
+    json - message
+    """
     response = {}
     with open('store.json', 'r') as data_file:
         data = json.load(data_file)
@@ -82,6 +126,15 @@ def put_to_json(pk, json_data, parent_identifier):
     return response
 
 def add_to_json(json_data, parent_identifier):
+    """Add json to the corresponding entity  - json 
+
+    Arguments
+    json_data - 
+    parent_identifier -  entity type
+
+    Return
+    json - message
+    """
     response = {}
     print(json_data)
     
