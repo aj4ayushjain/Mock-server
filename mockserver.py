@@ -23,15 +23,42 @@ def hello(parent_identifier):
     else:
         newlist = []    
         mydict = query_to_mydict(args)
-        for row in lst:
-            param_matched=0
-            for key in mydict.keys():
-                print(key)
-                if key in row.keys() and mydict[key] == str(row[key]):
-                   param_matched += 1
-                if param_matched == query_len:
-                    newlist.append(row)
-        return str(newlist)
+        
+        if '_sort' in mydict.keys():
+            return sort_json(parent_identifier, mydict)
+        else:
+            for row in lst:
+                param_matched=0
+                for key in mydict.keys():
+                    print(key)
+                    if key in row.keys() and mydict[key] == str(row[key]):
+                        param_matched += 1
+                    if param_matched == query_len:
+                        newlist.append(row)
+            return str(newlist)
+
+def sort_json(parent_identifier, mydict):
+
+    response = {}
+    with open('store.json') as json_file:
+        data = json.load(json_file)
+
+    if key_exist(data, parent_identifier):
+        rows = data[parent_identifier]
+        response[parent_identifier] = []
+        if len(rows):
+            sort_value = mydict['_sort']
+            for row in rows:
+                if sort_value in row.keys():
+                    response[parent_identifier].append(row)
+            if len(response[parent_identifier]):
+                sort_order = mydict['_order']
+                reverse = False if sort_order == 'asc' else True
+                response[parent_identifier] = sorted(response[parent_identifier], key = lambda i: i[sort_value], reverse=reverse)
+    else:
+        response["message"] = "No Entity is present with Name " + parent_identifier
+    return response
+
 
 @app.route("/<parent_id>/<int:id>/", methods=['GET'])
 def fetch_id(parent_id, id):
