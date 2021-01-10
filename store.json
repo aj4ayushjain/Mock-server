@@ -1,8 +1,1 @@
-{
-    "post":[{"id": 1,"firstName": "Josh","lastName": "Swan","fullName": "Josh Swan","hometown": "San Francisco, CA"},
-            {"id": 2,"firstName": "Hazel","lastName": "Sw","fullName": "hA","hometown": "SanjOSE, CA"}
-           ],
-    "hellow":[
-                {"id":1},{"id":3}
-            ]
-}   
+{"posts": [{"id": 0, "title": "title3", "author": "CommerceIQ", "views": 100, "reviews": 3}, {"id": 1, "title": "title3", "author": "CommerceIQ", "views": 100, "reviews": 3}, {"id": 2, "title": "title3", "author": "CommerceIQ", "views": 100, "reviews": 3}, {"id": 3, "title": "title6", "author": "CommerceI", "views": 132, "reviews": 9}], "authors": [{"id": 0, "first_name": "title3", "last_name": "CommerceIQ", "posts": 100}]}
